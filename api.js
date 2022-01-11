@@ -22,7 +22,7 @@ const docsRoot = pathJoin(__dirname, 'docs')
 
 const berlinFriedrichstr = '900000100001'
 
-let hafas = createHafas('hafas-rest-api: ' + pkg.name)
+let hafas = createHafas(`hafas-rest-api-${Date.now()}`);
 let healthCheck = createHealthCheck(hafas, berlinFriedrichstr)
 
 if (process.env.REDIS_URL) {
