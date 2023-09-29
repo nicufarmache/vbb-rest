@@ -8,6 +8,8 @@ const {filterByKeys: createFilter} = require('vbb-stations')
 const {data: stations, timeModified} = require('../lib/vbb-stations')
 const toNdjsonBuf = require('../lib/to-ndjson-buf')
 
+// todo: DRY with vbb-rest/routes/stations.js?
+
 const JSON_MIME = 'application/json'
 const NDJSON_MIME = 'application/x-ndjson'
 
@@ -28,7 +30,6 @@ const complete = (req, res, next, q, onStation, onEnd) => {
 	const completion = parse(q.completion) !== false
 	const results = autocomplete(q.query, limit, fuzzy, completion)
 
-	const data = []
 	for (const result of results) {
 		const station = stations[result.id]
 		if (!station) continue
@@ -57,6 +58,7 @@ const stationsRoute = (req, res, next) => {
 	}
 
 	res.setHeader('Last-Modified', timeModified.toUTCString())
+	res.setHeader('Content-Type', t)
 
 	const head = t === JSON_MIME ? '{\n' : ''
 	const sep = t === JSON_MIME ? ',\n' : '\n'
@@ -76,7 +78,11 @@ const stationsRoute = (req, res, next) => {
 	if (Object.keys(q).length === 0) {
 		const data = t === JSON_MIME ? asJson : asNdjson
 		const etag = t === JSON_MIME ? asJsonEtag : asNdjsonEtag
-		serveBuffer(req, res, data, {timeModified, etag})
+		serveBuffer(req, res, data, {
+			timeModified,
+			etag,
+			contentType: t,
+		})
 	} else if (q.query) {
 		complete(req, res, next, q, onStation, onEnd)
 	} else {
@@ -89,13 +95,13 @@ stationsRoute.openapiPaths = {
 		get: {
 			summary: 'Autocompletes stops/stations by name or filters stops/stations.',
 			description: `\
-If the \`query\` parameter is used, it will use [\`vbb-stations-autocomplete\`](https://npmjs.com/package/vbb-stations-autocomplete) to autocomplete stops/stations by name. Otherwise, it will filter the stops/stations in [\`vbb-stations\`](https://npmjs.com/package/vbb-stations).
+If the \`query\` parameter is used, it will use [\`vbb-stations-autocomplete@4\`](https://github.com/derhuerst/vbb-stations-autocomplete/tree/4.3.0) to autocomplete stops/stations by name. Otherwise, it will filter the stops/stations in [\`vbb-stations@7\`](https://github.com/derhuerst/vbb-stations/tree/7.3.2).
 
 Instead of receiving a JSON response, you can request [newline-delimited JSON](http://ndjson.org) by sending \`Accept: application/x-ndjson\`.`,
 			parameters: [{
 				name: 'query',
 				in: 'query',
-				description: 'Find stations by name using [`vbb-stations-autocomplete`](https://npmjs.com/package/vbb-stations-autocomplete).',
+				description: 'Find stations by name using [`vbb-stations-autocomplete@4`](https://github.com/derhuerst/vbb-stations-autocomplete/tree/4.3.0).',
 				schema: {
 					type: 'string',
 				},
@@ -126,12 +132,12 @@ Instead of receiving a JSON response, you can request [newline-delimited JSON](h
 			}],
 			responses: {
 				'2XX': {
-					description: 'An array of stops/stations, in the [`vbb-stations` format](https://github.com/derhuerst/vbb-stations/blob/master/readme.md).',
+					description: 'An object of stops/stations in the [`vbb-stations@7` format](https://github.com/derhuerst/vbb-stations/blob/7.3.2/readme.md), with their IDs as the keys.',
 					content: {
 						'application/json': {
 							schema: {
-								type: 'array',
-								items: {type: 'object'}, // todo
+								// todo
+								type: 'object',
 							},
 							// todo: example(s)
 						},
@@ -144,7 +150,7 @@ Instead of receiving a JSON response, you can request [newline-delimited JSON](h
 
 stationsRoute.queryParameters = {
 	query: {
-		description: 'Find stations by name using [`vbb-stations-autocomplete`](https://npmjs.com/package/vbb-stations-autocomplete).',
+		description: 'Find stations by name using [`vbb-stations-autocomplete@4`](https://github.com/derhuerst/vbb-stations-autocomplete/tree/4.3.0).',
 		type: 'string',
 		defaultStr: '–',
 	},

@@ -5,8 +5,6 @@ const parse = require('cli-native').to
 const createHafas = require('vbb-hafas')
 const createHealthCheck = require('hafas-client-health-check')
 const Redis = require('ioredis')
-const withCache = require('cached-hafas-client')
-const redisStore = require('cached-hafas-client/stores/redis')
 const createApi = require('hafas-rest-api')
 const serveStatic = require('serve-static')
 
@@ -26,6 +24,9 @@ let hafas = createHafas(`hafas-rest-api-${Date.now()}`);
 let healthCheck = createHealthCheck(hafas, berlinFriedrichstr)
 
 if (process.env.REDIS_URL) {
+	const withCache = require('cached-hafas-client')
+	const redisStore = require('cached-hafas-client/stores/redis')
+
 	const redis = new Redis(process.env.REDIS_URL || null)
 	hafas = withCache(hafas, redisStore(redis))
 
@@ -60,8 +61,8 @@ const addHafasOpts = (opt, method, req) => {
 }
 
 const config = {
-	hostname: process.env.HOSTNAME || 'localhost',
-	port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+	hostname: process.env.HOSTNAME || 'localhost',
+	port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
 	name: pkg.name,
 	description: pkg.description,
 	version: pkg.version,
@@ -84,6 +85,7 @@ const api = createApi(hafas, config, (api) => {
 })
 
 module.exports = {
+	hafas,
 	config,
 	api,
 }

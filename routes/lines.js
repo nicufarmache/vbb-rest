@@ -17,9 +17,9 @@ const asJsonEtag = computeEtag(asJson)
 const asNdjson = toNdjsonBuf(Object.entries(lines))
 const asNdjsonEtag = computeEtag(asNdjson)
 
-const err400 = (msg) => {
+const err = (msg, statusCode = 500) => {
 	const err = new Error(msg)
-	err.statusCode = 400
+	err.statusCode = statusCode
 	return err
 }
 
@@ -111,7 +111,7 @@ Instead of receiving a JSON response, you can request [newline-delimited JSON](h
 			}],
 			responses: {
 				'2XX': {
-					description: 'An array of stops/stations, in the [`vbb-stations` format](https://github.com/derhuerst/vbb-stations/blob/master/readme.md).',
+					description: 'An array of stops/stations, in the [`vbb-stations@7` format](https://github.com/derhuerst/vbb-stations/blob/7.3.2/readme.md).',
 					content: {
 						'application/json': {
 							schema: {
