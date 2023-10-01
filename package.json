@@ -49,8 +49,8 @@
 		"start": "node index.js",
 		"lint": "eslint .",
 		"test": "node test/index.js | tap-min",
-		"image": "docker buildx build --platform=linux/amd64,linux/arm64 . -t nicufrm/vbb-rest-nicu:v6",
-    "push": "docker push nicufrm/vbb-rest-nicu:v6",
+		"image": "docker buildx build --platform=linux/amd64,linux/arm64 . -t nicufrm/vbb-rest-nicu:6 -t nicufrm/vbb-rest-nicu:latest",
+    "push": "docker push nicufrm/vbb-rest-nicu:6 nicufrm/vbb-rest-nicu:latest",
 		"docker": "npm run image && npm run push"
 	},
 	"devDependencies": {
