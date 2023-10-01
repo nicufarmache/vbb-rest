@@ -2,7 +2,7 @@
 
 [`v5-vbb.nicu.ro`](https://v5-vbb.nicu.ro/) is a [REST API](https://restfulapi.net) for the public transportation system of [Berlin](https://en.wikipedia.org/wiki/Berlin) & [Brandenburg](https://en.wikipedia.org/wiki/Brandenburg), [VBB](https://en.wikipedia.org/wiki/Verkehrsverbund_Berlin-Brandenburg).
 
-[![API status](https://badgen.net/uptime-robot/status/m784879513-ed3cc45a865db0ba57af0001)](https://stats.uptimerobot.com/57wNLs39M/784879513)
+[![API status](https://badgen.net/uptime-robot/status/m795395646-522bb7f532ec558913775487)](https://stats.uptimerobot.com/n0GVMhlmzK/795395646)
 
 Because it wraps [an API](https://github.com/public-transport/hafas-client/blob/5/readme.md#background) of VBB, it **includes all local traffic, as well as some long-distance trains running in the area**. Essentially, it returns whatever data the [VBB app](https://www.vbb.de/fahrplan/vbb-app) shows, **including realtime delays and disruptions**.
 
