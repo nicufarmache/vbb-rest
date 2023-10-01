@@ -4,7 +4,7 @@ WORKDIR /app
 # install dependencies
 RUN apk add --update git bash
 ADD package.json /app
-RUN npm install
+RUN npm install --network=host
 
 # build documentation
 ADD . /app
@@ -24,15 +24,15 @@ WORKDIR /app
 
 # install dependencies
 ADD package.json /app
-RUN npm install --production && npm cache clean --force
+RUN npm install --omit=dev --network=host && npm cache clean --force
 
 # add source code
 ADD . /app
 COPY --from=builder /app/docs ./docs
 
-EXPOSE 3000
+EXPOSE 3905
 
 ENV HOSTNAME v5-vbb.nicu.ro
-ENV PORT 3000
+ENV PORT 3905
 
 CMD ["node", "index.js"]

@@ -45,7 +45,10 @@
 		"build": "npm run docs",
 		"start": "node index.js",
 		"lint": "eslint .",
-		"test": "node test/index.js | tap-min"
+		"test": "node test/index.js | tap-min",
+    "image": "docker buildx build --platform=linux/amd64,linux/arm64 . -t nicufrm/vbb-rest-nicu:v5",
+    "push": "docker push nicufrm/vbb-rest-nicu:v5",
+		"docker": "npm run image && npm run push"
 	},
 	"devDependencies": {
 		"@derhuerst/technical-docs-cli": "^1.1.0",
