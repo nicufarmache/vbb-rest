@@ -4,6 +4,7 @@ WORKDIR /app
 # install dependencies
 RUN apk add --update git bash
 ADD package.json /app
+ADD patches /app/patches
 RUN npm install --network=host
 
 # build documentation
@@ -25,6 +26,7 @@ WORKDIR /app
 # install dependencies
 RUN apk add --update git
 ADD package.json /app
+ADD patches /app/patches
 RUN npm install --omit=dev --network=host && npm cache clean --force
 
 # add source code
