@@ -35,6 +35,7 @@
 		"ioredis": "^5.0.3",
 		"lodash.omit": "^4.5.0",
 		"nocache": "^3.0.4",
+		"patch-package": "^8.0.0",
 		"serve-buffer": "^3.0.3",
 		"serve-static": "^1.14.1",
 		"vbb-hafas": "^8.0.1",
@@ -48,13 +49,14 @@
 		"localaddress-agent": "^2.1.1"
 	},
 	"scripts": {
+		"postinstall": "patch-package",
 		"build": "REDIS_URL='' ./build/index.js",
 		"start": "node index.js",
 		"lint": "eslint .",
 		"test": "node test/index.js | tap-min",
 		"image": "docker buildx build --platform=linux/amd64,linux/arm64 . -t nicufrm/vbb-rest-nicu:6 -t nicufrm/vbb-rest-nicu:latest",
-    "push": "docker push nicufrm/vbb-rest-nicu:6",
-    "pushlatest": "docker push nicufrm/vbb-rest-nicu:latest",
+		"push": "docker push nicufrm/vbb-rest-nicu:6",
+		"pushlatest": "docker push nicufrm/vbb-rest-nicu:latest",
 		"docker": "npm run image && npm run push && npm run pushlatest"
 	},
 	"devDependencies": {
