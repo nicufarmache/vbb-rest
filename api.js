@@ -7,7 +7,11 @@ import {dirname, join as pathJoin} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import _cliNative from 'cli-native'
 const {to: parse} = _cliNative
-import {createVbbHafas as createHafas} from 'vbb-hafas'
+import {
+	createVbbHafas as createHafas,
+	defaults as vbbHafasDefaults,
+} from 'vbb-hafas'
+import {createWriteStream} from 'node:fs'
 import createHealthCheck from 'hafas-client-health-check'
 import Redis from 'ioredis'
 import {createCachedHafasClient as withCache} from 'cached-hafas-client'
@@ -28,7 +32,44 @@ const docsRoot = pathJoin(__dirname, 'docs')
 
 const berlinFriedrichstr = '900100001'
 
-let hafas = createHafas(`hafas-rest-api-${Date.now()}`);
+const customVbbProfile = {
+	...vbbHafasDefaults.profile,
+}
+
+// todo: DRY env var check with localaddress-agent/random-from-env.js
+// Currently, this is impossible: localaddress-agent is an optional dependencies, so we rely on it to check the env var.
+if (process.env.RANDOM_LOCAL_ADDRESSES_RANGE) {
+	const {randomLocalAddressAgent} = await import('localaddress-agent/random-from-env.js')
+
+	customVbbProfile.transformReq = (_, req) => {
+		req.agent = randomLocalAddressAgent
+		return req
+	}
+}
+
+if (process.env.HAFAS_REQ_RES_LOG_FILE) {
+	const hafasLogPath = process.env.HAFAS_REQ_RES_LOG_FILE
+	const hafasLog = createWriteStream(hafasLogPath, {flags: 'a'}) // append-only
+	hafasLog.on('error', (err) => console.error('hafasLog error', err))
+
+	customVbbProfile.logRequest = (ctx, req, reqId) => {
+		console.error(reqId, 'req', req.body + '') // todo: remove
+		hafasLog.write(JSON.stringify([reqId, 'req', req.body + '']) + '\n')
+	}
+	customVbbProfile.logResponse = (ctx, res, body, reqId) => {
+		console.error(reqId, 'res', body + '') // todo: remove
+		hafasLog.write(JSON.stringify([reqId, 'res', body + '']) + '\n')
+	}
+}
+
+let hafas = createHafas(
+	// seems like `vbb-rest` is being redirected
+	// pkg.name,
+	// seems like these are being blocked
+	// require('crypto').randomBytes(10).toString('hex'),
+	'App/4.5.1 (iPhone; iOS 15.2; Scale/3.00)',
+	{profile: customVbbProfile},
+)
 let healthCheck = createHealthCheck(hafas, berlinFriedrichstr)
 
 if (process.env.REDIS_URL) {
