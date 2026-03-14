@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:18-alpine AS builder
 WORKDIR /app
 
 # install dependencies
@@ -35,7 +35,7 @@ COPY --from=builder /app/docs ./docs
 
 EXPOSE 3906
 
-ENV HOSTNAME v6-vbb.nicu.ro
-ENV PORT 3906
+ENV HOSTNAME=v6-vbb.nicu.ro
+ENV PORT=3906
 
 CMD ["node", "index.js"]
