@@ -2,12 +2,13 @@
 	"private": true,
 	"name": "vbb-rest",
 	"description": "An HTTP API for Berlin & Brandenburg public transport.",
-	"version": "6.0.6",
+	"version": "6.0.7",
 	"type": "module",
 	"main": "index.js",
 	"author": "Jannis R <mail@jannisr.de>",
 	"contributors": [
-		"Sophia Mersmann <sophia.mersmann1@gmail.com>"
+		"Sophia Mersmann <sophia.mersmann1@gmail.com>",
+		"Traines <git@traines.eu>"
 	],
 	"homepage": "https://github.com/derhuerst/vbb-rest/tree/6",
 	"repository": "derhuerst/vbb-rest",
@@ -34,10 +35,8 @@
 		"hafas-rest-api": "^5.1.0",
 		"ioredis": "^5.0.3",
 		"lodash.omit": "^4.5.0",
-		"nocache": "^3.0.4",
-		"patch-package": "^8.0.0",
 		"serve-buffer": "^3.0.3",
-		"serve-static": "^1.14.1",
+		"serve-static": "^2.2.0",
 		"vbb-hafas": "^8.0.1",
 		"vbb-lines": "^5.2.0",
 		"vbb-lines-at": "^5.2.0",
