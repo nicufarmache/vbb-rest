@@ -66,7 +66,8 @@
 		"ndjson": "^2.0.0",
 		"pino-pretty": "^9.0.0",
 		"tap-min": "^3.0.0",
-		"tape": "^5.6.1"
+		"tape": "^5.6.1",
+		"patch-package": "^8.0.0"
 	},
 	"goatCounterUrl": "https://72afc0822cce0642af90.goatcounter.com/count"
 }
