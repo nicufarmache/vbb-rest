@@ -119,7 +119,7 @@ const config = {
 	aboutPage: false,
 	addHafasOpts,
 	etags: 'strong',
-	csp: `default-src 'none' style-src 'self' 'unsafe-inline' img-src https:`,
+	csp: `default-src 'none'; style-src 'self' 'unsafe-inline'; img-src https:`,
 	modifyRoutes,
 	healthCheck,
 }
