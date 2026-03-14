@@ -42,7 +42,8 @@
 		"vbb-lines-at": "^5.2.0",
 		"vbb-shapes": "^4.0.0",
 		"vbb-stations": "^8.2.0",
-		"vbb-stations-autocomplete": "^4.4.0"
+		"vbb-stations-autocomplete": "^4.4.0",
+		"patch-package": "^8.0.0"
 	},
 	"optionalDependencies": {
 		"localaddress-agent": "^2.1.1"
@@ -66,8 +67,7 @@
 		"ndjson": "^2.0.0",
 		"pino-pretty": "^9.0.0",
 		"tap-min": "^3.0.0",
-		"tape": "^5.6.1",
-		"patch-package": "^8.0.0"
+		"tape": "^5.6.1"
 	},
 	"goatCounterUrl": "https://72afc0822cce0642af90.goatcounter.com/count"
 }
